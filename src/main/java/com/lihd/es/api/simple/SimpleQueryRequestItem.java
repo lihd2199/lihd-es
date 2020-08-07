@@ -1,4 +1,4 @@
-package com.lihd.es.request;
+package com.lihd.es.api.simple;
 
 import com.lihd.es.enums.QueryRequestItemBoolTypeEnum;
 import com.lihd.es.enums.QueryRequestItemTypeEnum;
@@ -9,7 +9,7 @@ import lombok.Data;
  * @date: 2020-08-06 13:54
  **/
 @Data
-public class QueryRequestItem {
+public class SimpleQueryRequestItem {
 
     private String field;
 
