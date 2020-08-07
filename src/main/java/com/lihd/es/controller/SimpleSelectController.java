@@ -1,0 +1,51 @@
+package com.lihd.es.controller;
+
+import com.lihd.es.bo.ProductBO;
+import com.lihd.es.request.QueryRequest;
+import com.lihd.es.service.QueryService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.List;
+
+/**
+ * @author: li_hd
+ * @date: 2020-08-05 22:07
+ **/
+@RestController
+@RequestMapping( method = {RequestMethod.POST})
+@Api(value = "query")
+public class SimpleSelectController {
+
+    @Resource
+    private SimpleSelectRequestBuilder simpleSelectRequestBuilder;
+    @Resource
+    private SimpleSelectResponseBuilder simpleSelectResponseBuilder;
+    @Resource
+    private QueryService queryService;
+
+
+    @ApiOperation(value = "简单非聚合查询")
+    @RequestMapping("/query")
+    public List<ProductBO> query(QueryRequest queryRequest) throws IOException {
+
+        final SearchSourceBuilder searchSourceBuilder = simpleSelectRequestBuilder.getSearchSourceBuilder(queryRequest);
+
+        final SearchResponse response = queryService.query(searchSourceBuilder);
+
+        return simpleSelectResponseBuilder.getProductList(response);
+    }
+
+
+
+}
